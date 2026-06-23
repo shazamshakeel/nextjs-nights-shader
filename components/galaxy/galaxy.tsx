@@ -30,6 +30,7 @@ import {
 } from 'three/tsl';
 import { rgbLogoSvgString } from './rgb-logo';
 import { rasterizeSvgToTexture } from './rasterize-svg-to-texture';
+import { loadImageTexture } from './load-image-texture';
 
 // ---- Sky (celestial sphere) parameters ----
 // All stars live on a sphere centered on the camera at the origin.
@@ -153,10 +154,10 @@ function buildSkyAttributes(p: SkyParams): {
     }
   };
 
-  // Primary band — sech² latitude bias around the y=0 plane.
-  writeBand(0);
-  // Secondary band — same density and thickness, shifted in latitude.
-  writeBand(p.band2Offset);
+  // Primary band — sech² latitude bias around the bottom (y=-180 degrees).
+  writeBand(-Math.PI / 2.5);
+  // Secondary band — same density and thickness, shifted in latitude toward bottom.
+  writeBand(-Math.PI / 3.2);
 
   // Field — uniform on the unit sphere.
   for (let i = 0; i < p.fieldCount; i++) {
@@ -1124,8 +1125,8 @@ export function Galaxy(): JSX.Element {
 
     Promise.all([
       initPromise,
-      rasterizeSvgToTexture(rgbLogoSvgString, 1600),
-    ]).then(([, { texture }]) => {
+      loadImageTexture('/portrait.png'),
+    ]).then(([, { texture, width, height }]) => {
       if (!running) {
         texture.dispose();
         return;
