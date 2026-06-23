@@ -47,10 +47,10 @@ type SkyParams = {
 };
 
 const DEFAULT_PARAMS: SkyParams = {
-  bandCount: 70_000,
-  fieldCount: 6_000,
+  bandCount: 100_000,
+  fieldCount: 10_000,
   sphereRadius: 300,
-  bandThickness: 0.07,
+  bandThickness: 0.03,
   brightFraction: 0.1,
   band2Offset: -0.175,
 };
